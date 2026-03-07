@@ -38,7 +38,12 @@
         .logo span {
             font-size: 30px;
         }
-        .clear-btn {
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .clear-btn, .new-session-btn {
             background: transparent;
             border: 1px solid #e94560;
             color: #e94560;
@@ -46,8 +51,9 @@
             border-radius: 5px;
             cursor: pointer;
             transition: all 0.2s;
+            font-size: 14px;
         }
-        .clear-btn:hover {
+        .clear-btn:hover, .new-session-btn:hover {
             background: #e94560;
             color: white;
         }
@@ -114,14 +120,30 @@
         .back-link:hover {
             color: #fff;
         }
+        .session-info {
+            font-size: 14px;
+            color: #888;
+            padding: 8px 0;
+        }
+        .session-info span {
+            color: #e94560;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <div class="logo"><span>🦞</span> openclaw</div>
-            <a href="/" class="back-link">← Back to Home</a>
+            <div class="header-actions">
+                <a href="/" class="back-link">← Back to Home</a>
+            </div>
         </header>
+
+        <div class="session-info">
+            Session: <span id="session-id">Loading...</span>
+            <button class="new-session-btn" onclick="createNewSession()">+ New Session</button>
+        </div>
 
         <div id="chat-container"></div>
 
@@ -135,6 +157,9 @@
         const chatContainer = document.getElementById('chat-container');
         const messageInput = document.getElementById('message-input');
         const sendBtn = document.getElementById('send-btn');
+        const sessionIdEl = document.getElementById('session-id');
+
+        let currentSessionId = null;
 
         function addMessage(content, role) {
             const div = document.createElement('div');
@@ -145,6 +170,25 @@
             `;
             chatContainer.appendChild(div);
             chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function renderHistory(history) {
+            chatContainer.innerHTML = '';
+            history.forEach(msg => {
+                addMessage(msg.content, msg.role);
+            });
+        }
+
+        async function createNewSession() {
+            try {
+                const response = await fetch('/api/sessions', { method: 'POST' });
+                const data = await response.json();
+                currentSessionId = data.session_id;
+                sessionIdEl.textContent = currentSessionId;
+                chatContainer.innerHTML = '';
+            } catch (error) {
+                console.error('Error creating session:', error);
+            }
         }
 
         async function sendMessage() {
@@ -158,15 +202,26 @@
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message })
+                    body: JSON.stringify({ message, session_id: currentSessionId })
                 });
 
                 const data = await response.json();
+                currentSessionId = data.session_id;
+                sessionIdEl.textContent = currentSessionId;
                 addMessage(data.response, 'assistant');
             } catch (error) {
                 addMessage('Error sending message', 'assistant');
             }
         }
+
+        // Load initial history
+        fetch('/api/history')
+            .then(res => res.json())
+            .then(data => {
+                currentSessionId = data.session_id;
+                sessionIdEl.textContent = currentSessionId;
+                renderHistory(data.history);
+            });
 
         sendBtn.addEventListener('click', sendMessage);
         messageInput.addEventListener('keypress', (e) => {
