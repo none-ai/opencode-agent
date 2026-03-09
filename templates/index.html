@@ -5,75 +5,189 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>openclaw - Your Personal AI Assistant 🦞</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 50px 20px;
-            text-align: center;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .logo {
             font-size: 80px;
             margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
         h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 3em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #58a6ff, #a371f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         .tagline {
-            font-size: 1.2em;
-            color: #aaa;
-            margin-bottom: 40px;
+            font-size: 1.3em;
+            color: #8b949e;
+            margin-bottom: 50px;
         }
         .features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
             margin: 40px 0;
         }
         .feature {
-            background: rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 10px;
+            background: #161b22;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #30363d;
+            transition: all 0.3s ease;
+        }
+        .feature:hover {
+            transform: translateY(-5px);
+            border-color: #58a6ff;
+            box-shadow: 0 10px 30px rgba(88, 166, 255, 0.1);
+        }
+        .feature-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        .feature h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #c9d1d9;
+        }
+        .feature p {
+            font-size: 0.9em;
+            color: #8b949e;
+            line-height: 1.5;
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
         }
         .btn {
-            display: inline-block;
-            background: #e94560;
-            color: white;
-            padding: 15px 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 40px;
             text-decoration: none;
-            border-radius: 50px;
-            font-size: 1.2em;
-            transition: transform 0.2s;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
         }
-        .btn:hover {
-            transform: scale(1.05);
+        .btn-primary {
+            background: #238636;
+            color: white;
+            border: none;
+        }
+        .btn-primary:hover {
+            background: #2ea043;
+            transform: scale(1.02);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+        }
+        .btn-secondary:hover {
+            background: #21262d;
+            border-color: #8b949e;
+        }
+        .api-key-note {
+            margin-top: 30px;
+            padding: 15px 25px;
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid rgba(88, 166, 255, 0.3);
+            border-radius: 8px;
+            font-size: 0.9em;
+            color: #8b949e;
+        }
+        .api-key-note a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+        .api-key-note a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            padding: 20px;
+            text-align: center;
+            color: #6e7681;
+            font-size: 0.85em;
+            border-top: 1px solid #21262d;
         }
     </style>
 </head>
 <body>
-    <div class="logo">🦞</div>
-    <h1>openclaw</h1>
-    <p class="tagline">Your own personal AI assistant. Any OS. Any Platform. The lobster way.</p>
+    <div class="container">
+        <div class="logo">🦞</div>
+        <h1>openclaw</h1>
+        <p class="tagline">Your own personal AI assistant. Any OS. Any Platform. The lobster way.</p>
 
-    <div class="features">
-        <div class="feature">
-            <h3>Cross-Platform</h3>
-            <p>Works on any operating system</p>
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🧠</div>
+                <h3>Claude Powered</h3>
+                <p>Powered by Anthropic's Claude for intelligent and contextual responses</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💬</div>
+                <h3>Real-time Streaming</h3>
+                <p>Experience smooth streaming responses as AI generates text</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📁</div>
+                <h3>Multi-Session</h3>
+                <p>Create and manage multiple chat sessions with ease</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎨</div>
+                <h3>Modern UI</h3>
+                <p>Beautiful dark theme with code highlighting support</p>
+            </div>
         </div>
-        <div class="feature">
-            <h3>Easy to Use</h3>
-            <p>Simple and intuitive interface</p>
+
+        <div class="cta-buttons">
+            <a href="/chat" class="btn btn-primary">
+                <span>Start Chatting</span>
+                <span>→</span>
+            </a>
         </div>
-        <div class="feature">
-            <h3>Open Source</h3>
-            <p>Free and customizable</p>
+
+        <div class="api-key-note">
+            💡 To use AI features, configure your Anthropic API key in <code>config.yaml</code>
+            or set the <code>ANTHROPIC_API_KEY</code> environment variable.
         </div>
     </div>
 
-    <a href="/chat" class="btn">Start Chatting</a>
+    <footer>
+        <p>openclaw - Built with ❤️ using Flask & Claude API</p>
+    </footer>
 </body>
 </html>
