@@ -1,0 +1,10 @@
+anthropic:
+  api_key: ""
+  model: claude-3-5-sonnet-20241022
+  max_tokens: 4096
+  temperature: 1.0
+
+app:
+  host: 0.0.0.0
+  port: 5000
+  debug: true
